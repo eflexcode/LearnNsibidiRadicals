@@ -31,13 +31,13 @@ class Util {
             val time = Date().hours
 
             return if (time < 12) {
-                "Good morning"
+                "Ụtụtụ ọma"
             } else if (time < 16) {
-                "Good afternoon"
+                "Ehihie ọma"
             } else if (time < 18) {
-                "Good evening"
+                "Mgbede ọma"
             } else {
-                "Good night"
+                "Ka chifoo"
             }
 
         }

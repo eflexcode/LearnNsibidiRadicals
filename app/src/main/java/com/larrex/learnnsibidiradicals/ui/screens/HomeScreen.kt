@@ -1,39 +1,31 @@
 package com.larrex.learnnsibidiradicals.ui.screens
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.RectF
 import android.os.Handler
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,317 +33,109 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.github.skydoves.colorpicker.compose.ColorEnvelope
-import com.github.skydoves.colorpicker.compose.HsvColorPicker
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.larrex.learnnsibidiradicals.R
 import com.larrex.learnnsibidiradicals.Util
-import com.larrex.learnnsibidiradicals.model.ColorItem
-import com.larrex.learnnsibidiradicals.model.DrawLine
-import com.larrex.learnnsibidiradicals.ui.conmponent.ColorComponent
-import com.larrex.learnnsibidiradicals.ui.theme.Black
-import com.larrex.learnnsibidiradicals.ui.theme.Black2
-import com.larrex.learnnsibidiradicals.ui.theme.Blue
-import com.larrex.learnnsibidiradicals.ui.theme.Green
-import com.larrex.learnnsibidiradicals.ui.theme.IgboBlue
-import com.larrex.learnnsibidiradicals.ui.theme.Orange
-import com.larrex.learnnsibidiradicals.ui.theme.Pink
-import com.larrex.learnnsibidiradicals.ui.theme.Purple
-import com.larrex.learnnsibidiradicals.ui.theme.White
-import com.larrex.learnnsibidiradicals.ui.theme.Yellow
+import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
+import com.larrex.learnnsibidiradicals.ui.conmponent.NsibidiItem
+import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
 import com.larrex.learnnsibidiradicals.ui.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(Color.Transparent, true)
+    var newText by remember { mutableStateOf(TextFieldValue("")) }
+    var page = 1
+//    val viewModel = hiltViewModel<MainViewModel>()
 
-    var showSheet by remember {
-        mutableStateOf(false)
-    }
-    val controller = rememberColorPickerController()
-
-    val supportedColors = listOf<ColorItem>(
-        ColorItem(Black, true),
-        ColorItem(Blue, false),
-        ColorItem(Orange, false),
-        ColorItem(Yellow, false),
-        ColorItem(Green, false),
-        ColorItem(Pink, false),
-        ColorItem(Purple, false),
-        ColorItem(Black2, false)
+    val handler = Handler()
+    val colors = listOf<Color>(Color.Transparent, Color.Black)
+    val fakelist = listOf<NsibidiItemModel>(
+        NsibidiItemModel(R.drawable.nsibidi_road, "okporo uzo"),
+        NsibidiItemModel(R.drawable.nsibidi_unknow, "unknowen")
     )
-
-    var sliderPosition by remember {
-        mutableStateOf(10f)
-    }
-
-    val viewmodel = viewModel<MainViewModel>()
-
-    var currentColors by remember { mutableStateOf(Color.Black) }
-    var currentWidth by remember { mutableStateOf(5.dp) }
-
-//    var currentColors = Color.Black
 
     Box(
         modifier = Modifier
+            .background(Color.White)
             .fillMaxSize()
-            .background(Color.White),
-        contentAlignment = Alignment.Center
     ) {
 
-        Column(modifier = Modifier.fillMaxWidth()) {
+        LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
 
-            Box(modifier = Modifier.weight(1f)) {
+            itemsIndexed(fakelist) { index, item ->
 
-            }
-
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(15.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(20.dp)
-            ) {
-
-                Column() {
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(7.dp), Arrangement.End
-                    ) {
-
-//                        Icon(
-//                            painter = rememberAsyncImagePainter(model = R.drawable.round_save),
-//                            contentDescription = "",
-//                            modifier = Modifier.padding(5.dp)
-//                        )
-
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .width(150.dp)
-                        ) {
-
-                            Button(
-                                onClick = { },
-                                border = BorderStroke(1.dp, Color.Black),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                                modifier = Modifier
-                            ) {
-
-                                Text(text = "Clear", color = Color.Black)
-
-                            }
-                        }
-                        Row(
-                            modifier = Modifier.weight(0.3f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(model = R.drawable.eraser),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(30.dp)
-                                    .clickable {
-                                        currentColors = Color.White
-                                    }
-                            )
-
-                            Icon(
-                                painter = rememberAsyncImagePainter(model = R.drawable.round_settings),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(30.dp)
-                                    .clickable { showSheet = true },
-                                tint = Color.Black
-
-                            )
-                        }
-
-
-                    }
-
-                    Canvas(modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(true) {
-                            detectDragGestures { change, dragAmount ->
-                                change.consume()
-
-                                val line = DrawLine(
-                                    start = change.position - dragAmount,
-                                    end = change.position,
-                                    color = currentColors,
-                                    strokeWidth = currentWidth
-                                )
-
-                                viewmodel.drawLineList.add(line)
-
-                            }
-                        }, onDraw = {
-
-                        viewmodel.drawLineList.forEach { line ->
-
-                            drawLine(
-                                color = line.color,
-                                start = line.start,
-                                end = line.end,
-                                cap = StrokeCap.Round,
-                                strokeWidth = line.strokeWidth.toPx()
-                            )
-
-                        }
-
-                    })
-
-                }
+                NsibidiItem(navController = navController, nsibidiItemModel = item)
 
             }
 
-        }
+        }, contentPadding = PaddingValues(bottom = 60.dp, top = 150.dp))
 
-        if (showSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showSheet = false
-                },
-                sheetState = rememberModalBottomSheetState(false),
-                containerColor = Color.White
-            ) {
+        Surface(color = Color.White.copy(alpha = 0.3f)) {
 
-                Column(
-                    modifier = Modifier.background(Color.White),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            Column() {
 
-                    Column(
-                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.SpaceBetween
-                    ) {
+                Text(
+                    text = Util.getGreeting(), modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, top = 35.dp),
+                    textAlign = TextAlign.Start,
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = Util.quicksand
+                )
 
+                TextField(
+                    value = newText,
+                    onValueChange = { text ->
+
+                        newText = text
+
+                    },
+                    modifier = Modifier
+                        .padding(top = 10.dp, end = 20.dp, start = 20.dp, bottom = 10.dp)
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        contentColorFor(backgroundColor = Color.Transparent),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+//                        containerColor = ChipBackground,
+//                        placeholderColor = Color.Gray,
+                    ),
+                    singleLine = true,
+                    shape = RoundedCornerShape(10.dp),
+                    placeholder = {
                         Text(
-                            text = "Colors \uD83C\uDFA8",
-                            modifier = Modifier.padding(start = 20.dp, bottom = 7.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Util.quicksand,
-                            color = Color.Black
+                            text = "Start typing",
+                            color = Color.Gray,
+                            fontSize = 12.sp
                         )
+                    },
+                    textStyle = TextStyle.Default.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = Util.quicksand,
+                        fontSize = 12.sp,
+                        color = Color.Black
+                    ),
 
-                        LazyRow(
-                            content = {
-
-                                itemsIndexed(supportedColors) { index, it ->
-
-                                    ColorComponent(
-                                        color = it.color,
-                                        viewmodel.selectedColor.value == index
-                                    ) {
-
-                                        viewmodel.selectedColor.value = index
-
-                                        currentColors = it.color
-
-                                    }
-
-                                    Spacer(modifier = Modifier.width(15.dp))
-
-                                }
-                            },
-                            contentPadding = PaddingValues(start = 30.dp, end = 30.dp),
-                            modifier = Modifier.padding(bottom = 7.dp)
-                        )
-
-                        Text(
-                            text = "Brush thickness \uD83D\uDD8C",
-                            modifier = Modifier.padding(start = 20.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Util.quicksand,
-                            color = Color.Black
-
-                        )
-
-                        Column(
-                            modifier = Modifier.padding(
-                                bottom = 7.dp, start = 40.dp, end = 40.dp
-                            ),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-
-                            Canvas(modifier = Modifier
-                                .height(26.dp)
-                                .width(50.dp), onDraw = {
-
-                                drawLine(
-                                    color = Black,
-                                    strokeWidth = sliderPosition,
-                                    cap = StrokeCap.Round,
-                                    start = Offset(x = 0f, y = size.height),
-                                    end = Offset(
-                                        x = size.width, y = size.height
-                                    )
-                                )
-
-                            })
-
-                            Slider(
-                                value = sliderPosition,
-                                onValueChange = {
-                                    sliderPosition = it
-                                    currentWidth = it.toInt().dp
-                                },
-                                valueRange = 5f..25f,
-                                steps = 5,
-                                colors = SliderDefaults.colors(
-                                    thumbColor = IgboBlue, activeTrackColor = IgboBlue
-                                )
-                            )
-
-                        }
-
-                    }
-
-//                    Button(
-//                        onClick = { showSheet = false },
-//                        modifier = Modifier
-//                            .padding(bottom = 7.dp, top = 7.dp)
-//                            .width(250.dp),
-//                        colors = ButtonDefaults.buttonColors(containerColor = IgboBlue)
-//                    ) {
-//                        Text(
-//                            text = "Save", fontFamily = Util.quicksand,
-//                        )
-//                    }
-
-                }
+                    )
 
             }
         }
