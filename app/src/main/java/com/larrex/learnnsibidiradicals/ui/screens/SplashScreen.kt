@@ -79,8 +79,9 @@ fun SplashScreen(navController: NavController) {
                 style = TextStyle.Default
 
             )
+
             Text(
-                text = "Learn Nsịbìdī Radicals",
+                text = "Learn Nsịbìdī Characters",
                 textAlign = TextAlign.Center,
                 fontSize = 30.sp,
                 color = Color.White,
@@ -89,6 +90,7 @@ fun SplashScreen(navController: NavController) {
                 style = TextStyle.Default
 
             )
+
         }
 
     }

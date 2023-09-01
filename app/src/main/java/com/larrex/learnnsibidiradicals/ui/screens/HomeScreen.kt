@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.larrex.learnnsibidiradicals.R
@@ -53,6 +54,7 @@ import com.larrex.learnnsibidiradicals.Util
 import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
 import com.larrex.learnnsibidiradicals.ui.conmponent.NsibidiItem
 import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
+import com.larrex.learnnsibidiradicals.ui.theme.ChipBackground
 import com.larrex.learnnsibidiradicals.ui.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,14 +63,12 @@ fun HomeScreen(navController: NavController) {
 
     var newText by remember { mutableStateOf(TextFieldValue("")) }
     var page = 1
-//    val viewModel = hiltViewModel<MainViewModel>()
+    val viewModel = viewModel<MainViewModel>()
 
     val handler = Handler()
     val colors = listOf<Color>(Color.Transparent, Color.Black)
-    val fakelist = listOf<NsibidiItemModel>(
-        NsibidiItemModel(R.drawable.nsibidi_road, "okporo uzo"),
-        NsibidiItemModel(R.drawable.nsibidi_unknow, "unknowen")
-    )
+
+
 
     Box(
         modifier = Modifier
@@ -76,68 +76,104 @@ fun HomeScreen(navController: NavController) {
             .fillMaxSize()
     ) {
 
-        LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+        Column {
+            Text(
+                text = Util.getGreeting(), modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, top = 35.dp),
+                textAlign = TextAlign.Start,
+                fontSize = 25.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontFamily = Util.quicksand
+            )
 
-            itemsIndexed(fakelist) { index, item ->
+//            TextField(
+//                value = newText,
+//                onValueChange = { text ->
+//
+//                    newText = text
+//
+//                },
+//                modifier = Modifier
+//                    .padding(top = 10.dp, end = 20.dp, start = 20.dp, bottom = 10.dp)
+//                    .fillMaxWidth()
+//                    .height(48.dp),
+//                colors = TextFieldDefaults.textFieldColors(
+//                    contentColorFor(backgroundColor = Color.Transparent),
+//                    focusedIndicatorColor = Color.Transparent,
+//                    unfocusedIndicatorColor = Color.Transparent,
+////                        containerColor = ChipBackground,
+////                        placeholderColor = Color.Gray,
+//                ),
+//                singleLine = true,
+//                shape = RoundedCornerShape(10.dp),
+//                placeholder = {
+//                    Text(
+//                        text = "Start typing",
+//                        color = Color.Gray,
+//                        fontSize = 12.sp
+//                    )
+//                },
+//                textStyle = TextStyle.Default.copy(
+//                    fontWeight = FontWeight.Bold,
+//                    fontFamily = Util.quicksand,
+//                    fontSize = 12.sp,
+//                    color = Color.Black
+//                ),
+//
+//                )
 
-                NsibidiItem(navController = navController, nsibidiItemModel = item)
+            TextField(
+                value = newText,
+                onValueChange = { text ->
 
-            }
+                    newText = text
+                    viewModel.doSearch(text.text)
 
-        }, contentPadding = PaddingValues(bottom = 60.dp, top = 150.dp))
+                },
+                modifier = Modifier
+                    .padding(top = 10.dp, end = 20.dp, start = 20.dp, bottom = 10.dp)
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = TextFieldDefaults.colors(
 
-        Surface(color = Color.White.copy(alpha = 0.3f)) {
+                    contentColorFor(backgroundColor = ChipBackground),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
 
-            Column() {
-
-                Text(
-                    text = Util.getGreeting(), modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, top = 35.dp),
-                    textAlign = TextAlign.Start,
-                    fontSize = 25.sp,
-                    color = Color.Black,
+                    ),
+                singleLine = true,
+                shape = RoundedCornerShape(10.dp),
+                placeholder = {
+                    Text(
+                        text = "Search",
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                    )
+                },
+                textStyle = TextStyle.Default.copy(
                     fontWeight = FontWeight.Bold,
-                    fontFamily = Util.quicksand
+                    fontFamily = Util.quicksand,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                ),
+
                 )
 
-                TextField(
-                    value = newText,
-                    onValueChange = { text ->
+            LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
 
-                        newText = text
+                itemsIndexed(
+                    if (newText.text.trim()
+                            .isEmpty()
+                    ) viewModel.nsibidilist else viewModel.nsibidiSearchList
+                ) { index, item ->
 
-                    },
-                    modifier = Modifier
-                        .padding(top = 10.dp, end = 20.dp, start = 20.dp, bottom = 10.dp)
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                        contentColorFor(backgroundColor = Color.Transparent),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-//                        containerColor = ChipBackground,
-//                        placeholderColor = Color.Gray,
-                    ),
-                    singleLine = true,
-                    shape = RoundedCornerShape(10.dp),
-                    placeholder = {
-                        Text(
-                            text = "Start typing",
-                            color = Color.Gray,
-                            fontSize = 12.sp
-                        )
-                    },
-                    textStyle = TextStyle.Default.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = Util.quicksand,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    ),
+                    NsibidiItem(navController = navController, nsibidiItemModel = item)
 
-                    )
+                }
 
-            }
+            }, contentPadding = PaddingValues(bottom = 60.dp, top = 10.dp))
         }
 
     }

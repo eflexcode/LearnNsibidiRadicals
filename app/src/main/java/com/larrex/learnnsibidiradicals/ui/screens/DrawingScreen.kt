@@ -1,5 +1,6 @@
 package com.larrex.learnnsibidiradicals.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -89,6 +91,10 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
     var currentWidth by remember { mutableStateOf(5.dp) }
 
 //    var currentColors = Color.Black
+
+    val context = LocalContext.current
+
+    Toast.makeText(context,"Click setting icon to change color if you clicked eraser click setting can click color again",Toast.LENGTH_LONG).show()
 
     Box(
         modifier = Modifier
