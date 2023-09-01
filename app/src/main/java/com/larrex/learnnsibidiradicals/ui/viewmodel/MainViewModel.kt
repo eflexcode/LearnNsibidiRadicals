@@ -23,11 +23,15 @@ class MainViewModel : ViewModel() {
         NsibidiItemModel(R.drawable.nsibidi_person, "mádu"),
         NsibidiItemModel(R.drawable.nsibidi_us, "anyi"),
         NsibidiItemModel(R.drawable.nsibidi_spider, "ududọ"),
-        NsibidiItemModel(R.drawable.nsibidi_python, "python"),
+        NsibidiItemModel(R.drawable.nsibidi_python, "agwo"),
         NsibidiItemModel(R.drawable.nsibidi_child, "nwa"),
         NsibidiItemModel(R.drawable.nsibidi_woman, "nwanyi"),
         NsibidiItemModel(R.drawable.nsibidi_man, "oke"),
         NsibidiItemModel(R.drawable.nsibidi_protitute, "akwuna"),
+        NsibidiItemModel(R.drawable.nsibidi_music, "égwú"),
+        NsibidiItemModel(R.drawable.nsibidi_place, "ébé"),
+        NsibidiItemModel(R.drawable.nsibidi_money, "okpogho/ikpeghe"),
+        NsibidiItemModel(R.drawable.nsibidi_drink, "ṅụọe"),
     )
 
     val nsibidiSearchList = mutableListOf<NsibidiItemModel>()
