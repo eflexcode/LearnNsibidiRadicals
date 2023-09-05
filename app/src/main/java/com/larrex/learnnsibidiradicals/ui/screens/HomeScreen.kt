@@ -1,5 +1,7 @@
 package com.larrex.learnnsibidiradicals.ui.screens
 
+import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +40,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,9 +52,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.larrex.learnnsibidiradicals.R
 import com.larrex.learnnsibidiradicals.Util
 import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
+import com.larrex.learnnsibidiradicals.ui.conmponent.AdBannerHome
 import com.larrex.learnnsibidiradicals.ui.conmponent.NsibidiItem
 import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
 import com.larrex.learnnsibidiradicals.ui.theme.ChipBackground
@@ -62,13 +70,16 @@ import com.larrex.learnnsibidiradicals.ui.viewmodel.MainViewModel
 fun HomeScreen(navController: NavController) {
 
     var newText by remember { mutableStateOf(TextFieldValue("")) }
-    var page = 1
     val viewModel = viewModel<MainViewModel>()
 
     val handler = Handler()
     val colors = listOf<Color>(Color.Transparent, Color.Black)
 
+    val context = LocalContext.current
 
+    var mInterstitialAd2: InterstitialAd? = null
+    val isItemSaved = context.getSharedPreferences("adCount", Context.MODE_PRIVATE)
+    val adCount = isItemSaved.getInt("ad", 0)
 
     Box(
         modifier = Modifier
@@ -77,52 +88,18 @@ fun HomeScreen(navController: NavController) {
     ) {
 
         Column {
+            AdBannerHome()
+
             Text(
                 text = Util.getGreeting(), modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, top = 35.dp),
+                    .padding(start = 20.dp, top = 20.dp),
                 textAlign = TextAlign.Start,
                 fontSize = 25.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontFamily = Util.quicksand
             )
-
-//            TextField(
-//                value = newText,
-//                onValueChange = { text ->
-//
-//                    newText = text
-//
-//                },
-//                modifier = Modifier
-//                    .padding(top = 10.dp, end = 20.dp, start = 20.dp, bottom = 10.dp)
-//                    .fillMaxWidth()
-//                    .height(48.dp),
-//                colors = TextFieldDefaults.textFieldColors(
-//                    contentColorFor(backgroundColor = Color.Transparent),
-//                    focusedIndicatorColor = Color.Transparent,
-//                    unfocusedIndicatorColor = Color.Transparent,
-////                        containerColor = ChipBackground,
-////                        placeholderColor = Color.Gray,
-//                ),
-//                singleLine = true,
-//                shape = RoundedCornerShape(10.dp),
-//                placeholder = {
-//                    Text(
-//                        text = "Start typing",
-//                        color = Color.Gray,
-//                        fontSize = 12.sp
-//                    )
-//                },
-//                textStyle = TextStyle.Default.copy(
-//                    fontWeight = FontWeight.Bold,
-//                    fontFamily = Util.quicksand,
-//                    fontSize = 12.sp,
-//                    color = Color.Black
-//                ),
-//
-//                )
 
             TextField(
                 value = newText,
@@ -160,7 +137,6 @@ fun HomeScreen(navController: NavController) {
                 ),
 
                 )
-
             LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
 
                 itemsIndexed(
@@ -169,11 +145,31 @@ fun HomeScreen(navController: NavController) {
                     ) viewModel.nsibidilist else viewModel.nsibidiSearchList
                 ) { index, item ->
 
-                    NsibidiItem(navController = navController, nsibidiItemModel = item)
+                    NsibidiItem(navController = navController, nsibidiItemModel = item){
+                        val editPreference = isItemSaved.edit()
+
+                        if (adCount > 3){
+                            editPreference.putInt("ad", 0)
+                        }
+
+                        editPreference.putInt("ad", adCount + 1)
+                        editPreference.commit()
+
+                        navController.currentBackStackEntry?.savedStateHandle?.set("imageclass",item)
+
+                        navController.navigate(NavRouts.DrawingRout.rout)
+
+                    }
 
                 }
 
+
+
+
             }, contentPadding = PaddingValues(bottom = 60.dp, top = 10.dp))
+
+
+
         }
 
     }

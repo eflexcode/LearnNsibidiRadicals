@@ -29,7 +29,11 @@ import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
 import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
 
 @Composable
-fun NsibidiItem(navController: NavController, nsibidiItemModel: NsibidiItemModel) {
+fun NsibidiItem(
+    navController: NavController,
+    nsibidiItemModel: NsibidiItemModel,
+    onClick: () -> Unit
+) {
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -38,9 +42,7 @@ fun NsibidiItem(navController: NavController, nsibidiItemModel: NsibidiItemModel
             .padding(10.dp)
             .clickable {
 
-                navController.currentBackStackEntry?.savedStateHandle?.set("imageclass",nsibidiItemModel)
-                navController.navigate(NavRouts.DrawingRout.rout)
-
+                onClick()
 
             },
         elevation = CardDefaults.cardElevation(10.dp),
