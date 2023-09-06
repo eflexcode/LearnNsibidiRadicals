@@ -103,7 +103,6 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
 
     Toast.makeText(context,"Click setting icon to change color if you clicked eraser click setting can click color again",Toast.LENGTH_LONG).show()
 
-    var mInterstitialAd2: InterstitialAd? = null
     val isItemSaved = context.getSharedPreferences("adCount", Context.MODE_PRIVATE)
     val adCount = isItemSaved.getInt("ad", 0)
 
@@ -114,31 +113,6 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
         contentAlignment = Alignment.Center
     ) {
 
-        if (adCount == 3) {
-
-            val adRequest: AdRequest = AdRequest.Builder().build()
-
-            InterstitialAd.load(
-                context,
-                "ca-app-pub-6774551177253748/2621959835",
-                adRequest,
-                object : InterstitialAdLoadCallback() {
-                    override fun onAdFailedToLoad(adError: LoadAdError) {
-
-                        mInterstitialAd2 = null
-
-                    }
-
-                    override fun onAdLoaded(interstitialAd: InterstitialAd) {
-
-                        mInterstitialAd2 = interstitialAd
-
-                        mInterstitialAd2?.show(context as Activity)
-
-                    }
-                })
-
-        }
 
 
         Column(modifier = Modifier.fillMaxWidth()) {

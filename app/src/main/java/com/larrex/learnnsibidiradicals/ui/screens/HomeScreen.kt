@@ -78,8 +78,7 @@ fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
 
     var mInterstitialAd2: InterstitialAd? = null
-    val isItemSaved = context.getSharedPreferences("adCount", Context.MODE_PRIVATE)
-    val adCount = isItemSaved.getInt("ad", 0)
+
 
     Box(
         modifier = Modifier
@@ -146,14 +145,7 @@ fun HomeScreen(navController: NavController) {
                 ) { index, item ->
 
                     NsibidiItem(navController = navController, nsibidiItemModel = item){
-                        val editPreference = isItemSaved.edit()
 
-                        if (adCount > 3){
-                            editPreference.putInt("ad", 0)
-                        }
-
-                        editPreference.putInt("ad", adCount + 1)
-                        editPreference.commit()
 
                         navController.currentBackStackEntry?.savedStateHandle?.set("imageclass",item)
 
