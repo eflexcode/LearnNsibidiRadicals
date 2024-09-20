@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
         editPreference.putInt("ad", adCount + 1)
 
-        if (adCount > 3){
+        if (adCount > 3) {
             editPreference.putInt("ad", 0)
         }
 

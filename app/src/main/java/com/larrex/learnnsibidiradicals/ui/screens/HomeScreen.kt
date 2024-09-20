@@ -146,7 +146,6 @@ fun HomeScreen(navController: NavController) {
 
                     NsibidiItem(navController = navController, nsibidiItemModel = item){
 
-
                         navController.currentBackStackEntry?.savedStateHandle?.set("imageclass",item)
 
                         navController.navigate(NavRouts.DrawingRout.rout)
@@ -155,12 +154,7 @@ fun HomeScreen(navController: NavController) {
 
                 }
 
-
-
-
             }, contentPadding = PaddingValues(bottom = 60.dp, top = 10.dp))
-
-
 
         }
 

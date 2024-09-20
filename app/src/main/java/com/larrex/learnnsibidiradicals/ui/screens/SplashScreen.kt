@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -31,23 +32,28 @@ import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
 @Composable
 fun SplashScreen(navController: NavController) {
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(Color.Transparent, true)
 
-    val colors = listOf<Color>(Color.Transparent, Color.Black)
 
-    val handler = Handler()
 
-    handler.postDelayed({
-
-        navController.navigate(NavRouts.HomeRout.rout) {
-            popUpTo(0) {
-            }
-        }
-
-    }, 3000)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+        val systemUiController = rememberSystemUiController()
+        systemUiController.setSystemBarsColor(Color.Transparent, true)
+
+        val colors = listOf<Color>(Color.Transparent, Color.Black)
+
+        val handler = Handler()
+        LaunchedEffect(Unit) {
+            handler.postDelayed({
+                navController.navigate(NavRouts.HomeRout.rout) {
+                    popUpTo(0) {
+                    }
+                }
+
+            }, 3000)
+        }
+
 
         Image(
             painter = rememberAsyncImagePainter(model = R.drawable.sharpen_igbo_girl_dancing_2_slime_2),

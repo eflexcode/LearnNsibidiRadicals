@@ -101,7 +101,7 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
 
     val context = LocalContext.current
 
-    Toast.makeText(context,"Click setting icon to change color if you clicked eraser click setting can click color again",Toast.LENGTH_LONG).show()
+//    Toast.makeText(context,"Click setting icon to change color if you clicked eraser click setting can click color again",Toast.LENGTH_LONG).show()
 
     val isItemSaved = context.getSharedPreferences("adCount", Context.MODE_PRIVATE)
     val adCount = isItemSaved.getInt("ad", 0)
