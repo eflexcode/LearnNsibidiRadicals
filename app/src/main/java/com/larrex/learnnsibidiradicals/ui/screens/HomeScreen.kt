@@ -87,12 +87,13 @@ fun HomeScreen(navController: NavController) {
     ) {
 
         Column {
+
             AdBannerHome()
 
             Text(
                 text = Util.getGreeting(), modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, top = 20.dp),
+                    .padding(start = 20.dp, top = 10.dp),
                 textAlign = TextAlign.Start,
                 fontSize = 25.sp,
                 color = Color.Black,
@@ -144,15 +145,21 @@ fun HomeScreen(navController: NavController) {
                     ) viewModel.nsibidilist else viewModel.nsibidiSearchList
                 ) { index, item ->
 
-                    NsibidiItem(navController = navController, nsibidiItemModel = item){
 
-                        navController.currentBackStackEntry?.savedStateHandle?.set("imageclass",item)
 
-                        navController.navigate(NavRouts.DrawingRout.rout)
+                        NsibidiItem(navController = navController, nsibidiItemModel = item) {
+
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                "imageclass",
+                                item
+                            )
+
+                            navController.navigate(NavRouts.DrawingRout.rout)
+
+                        }
 
                     }
 
-                }
 
             }, contentPadding = PaddingValues(bottom = 60.dp, top = 10.dp))
 

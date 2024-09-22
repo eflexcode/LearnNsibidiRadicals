@@ -15,11 +15,11 @@ fun AdBannerHome(){
 
     AndroidView(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 5.dp, bottom = 5.dp), factory = { context ->
+        .padding(top = 35.dp, bottom = 2.dp), factory = { context ->
 
         AdView(context).apply {
             setAdSize(AdSize.BANNER)
-            adUnitId = "ca-app-pub-4141073472139762/9821916719"
+            adUnitId = "ca-app-pub-3940256099942544/9214589741"
             loadAd(AdRequest.Builder().build())
         }
 
@@ -36,7 +36,7 @@ fun AdBannerDraw(){
 
         AdView(context).apply {
             setAdSize(AdSize.BANNER)
-            adUnitId = "ca-app-pub-4141073472139762/3209241056"
+            adUnitId = "ca-app-pub-3940256099942544/9214589741"
             loadAd(AdRequest.Builder().build())
         }
 

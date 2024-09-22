@@ -113,10 +113,7 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
         contentAlignment = Alignment.Center
     ) {
 
-
-
         Column(modifier = Modifier.fillMaxWidth()) {
-
 
             Box(modifier = Modifier.weight(1f)) {
                 Column(
