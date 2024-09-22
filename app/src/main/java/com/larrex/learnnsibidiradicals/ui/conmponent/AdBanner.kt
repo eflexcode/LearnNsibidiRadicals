@@ -15,7 +15,7 @@ fun AdBannerHome(){
 
     AndroidView(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 35.dp, bottom = 2.dp), factory = { context ->
+        .padding(top = 45.dp, bottom = 2.dp), factory = { context ->
 
         AdView(context).apply {
             setAdSize(AdSize.BANNER)
