@@ -13,7 +13,7 @@ import kotlin.math.log
 
 class OpenAdManagers {
 
-    val OpenAdID = "ca-app-pub-3940256099942544/9257395921"
+    val OpenAdID = "ca-app-pub-6649871470282634/2389262790"
     private val TAG = "OpenAdManagers"
 
     private var loadTime: Long = 0

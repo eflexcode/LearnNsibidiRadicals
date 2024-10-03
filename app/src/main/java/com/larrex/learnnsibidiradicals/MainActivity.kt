@@ -39,56 +39,6 @@ class MainActivity : ComponentActivity() {
         openAdManagers = OpenAdManagers()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-//        val windowInsetsController =
-//            ViewCompat.getWindowInsetsController(window.decorView)
-//
-//        windowInsetsController?.isAppearanceLightNavigationBars = true
-//
-//        val isItemSaved = getSharedPreferences("adCount", Context.MODE_PRIVATE)
-//        val adCount = isItemSaved.getInt("ad", 0)
-//
-//        val gfgPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-//        StrictMode.setThreadPolicy(gfgPolicy)
-//
-//        var mInterstitialAd2: InterstitialAd? = null
-//
-//        val editPreference = isItemSaved.edit()
-//
-//        editPreference.putInt("ad", adCount + 1)
-//
-//        if (adCount > 3) {
-//            editPreference.putInt("ad", 0)
-//        }
-//
-//        editPreference.commit()
-//
-////        Toast.makeText(this,""+adCount,Toast.LENGTH_LONG).show()
-//        if (adCount == 3) {
-//
-//            val adRequest: AdRequest = AdRequest.Builder().build()
-//
-//            InterstitialAd.load(
-//                this,
-//                "ca-app-pub-3940256099942544/9214589741",
-//                adRequest,
-//                object : InterstitialAdLoadCallback() {
-//                    override fun onAdFailedToLoad(adError: LoadAdError) {
-//
-//                        mInterstitialAd2 = null
-//
-//                    }
-//
-//                    override fun onAdLoaded(interstitialAd: InterstitialAd) {
-//
-//                        mInterstitialAd2 = interstitialAd
-//
-//                        mInterstitialAd2?.show(this@MainActivity)
-//
-//                    }
-//                })
-//
-//        }
-
         setContent {
             LearnNsibidiRadicalsTheme {
                 // A surface container using the 'background' color from the theme
