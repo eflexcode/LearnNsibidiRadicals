@@ -93,4 +93,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-ads:23.3.0'
 
+    implementation "com.google.accompanist:accompanist-permissions:0.26.2-beta"
+    implementation 'com.unity3d.ads:unity-ads:4.6.1'
+
 }

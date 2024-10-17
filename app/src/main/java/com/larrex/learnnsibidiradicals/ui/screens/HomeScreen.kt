@@ -60,6 +60,7 @@ import com.larrex.learnnsibidiradicals.R
 import com.larrex.learnnsibidiradicals.Util
 import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
 import com.larrex.learnnsibidiradicals.ui.conmponent.AdBannerHome
+import com.larrex.learnnsibidiradicals.ui.conmponent.AdBannerHomeUnity
 import com.larrex.learnnsibidiradicals.ui.conmponent.NsibidiItem
 import com.larrex.learnnsibidiradicals.ui.navigation.NavRouts
 import com.larrex.learnnsibidiradicals.ui.theme.ChipBackground
@@ -89,6 +90,7 @@ fun HomeScreen(navController: NavController) {
         Column {
 
             AdBannerHome()
+            AdBannerHomeUnity(context as Activity)
 
             Text(
                 text = Util.getGreeting(), modifier = Modifier

@@ -53,6 +53,7 @@ import com.larrex.learnnsibidiradicals.model.ColorItem
 import com.larrex.learnnsibidiradicals.model.DrawLine
 import com.larrex.learnnsibidiradicals.model.NsibidiItemModel
 import com.larrex.learnnsibidiradicals.ui.conmponent.AdBannerDraw
+import com.larrex.learnnsibidiradicals.ui.conmponent.AdBannerHomeUnity
 import com.larrex.learnnsibidiradicals.ui.conmponent.ColorComponent
 import com.larrex.learnnsibidiradicals.ui.theme.Black
 import com.larrex.learnnsibidiradicals.ui.theme.Black2
@@ -123,6 +124,7 @@ fun DrawingScreen(navController: NavController, nsibidiItemModel: NsibidiItemMod
                 ) {
 
                     AdBannerDraw()
+                    AdBannerHomeUnity(context as Activity)
 
                     Image(
                         painter = rememberAsyncImagePainter(model = nsibidiItemModel.imageId),
