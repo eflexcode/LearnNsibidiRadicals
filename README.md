@@ -5,7 +5,7 @@
 
 An free app to help people practices there nsibidi characters/radicals 
 
-## Feature
+## Features
 
 - Provides nsibidi characters
 - Provides paint panel with nsibidi characters to practise on
